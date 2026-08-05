@@ -81,7 +81,7 @@ if __name__ == '__main__':
             # Create Difficulty Function
             diff_f = DifficultyPredictor(verbose=False)
             if VERBOSE:
-                print('-------------------- CREATE D THETA -----------------------')
+                print('------------------- CREATE D THETA -----------------------')
 
             # Loop for training and testing classifiers and finally building d_theta
             if VERBOSE:
