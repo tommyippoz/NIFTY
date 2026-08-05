@@ -1,2 +1,2 @@
 # NIFTY
-iNtrinsic Inference difficulty (NIFTY) computation library 
+iNtrinsic InFerence difficulTY (NIFTY) computation library 
