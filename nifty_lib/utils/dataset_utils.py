@@ -37,7 +37,7 @@ def read_tabular_dataset(dataset_name: str, label_name: str, limit: int = numpy.
         labels = numpy.unique(y_enc)
 
     # Basic Pre-Processing
-    print("\nDataset %s loaded: %d items" % (dataset_name, len(df.index)))
+    print("\nDataset  %s loaded: %d items" % (dataset_name, len(df.index)))
 
     # Train/Test Split of Classifiers
     x = df.drop(columns=[label_name])
