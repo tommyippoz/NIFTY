@@ -88,7 +88,6 @@ if __name__ == '__main__':
                 print("Training classifiers to generate D_theta")
 
             clf_preds = []
-            clf_preds_t = []
             clf_population = get_classifier_population()
             for classifier in clf_population:
                 start_time = current_ms()
@@ -99,7 +98,6 @@ if __name__ == '__main__':
                 train_time = mid_time - start_time
                 b_acc = balanced_accuracy_score(data_dict["y_test"], preds)
                 clf_preds.append(preds)
-                clf_preds_t.append(classifier.predict(data_dict["x_test"]))
                 if VERBOSE:
                     print("\t[%d/%d] Classifier %s trained in %d ms, predicted in %d ms, balanced accuracy %.4f" %
                       (len(clf_preds), len(clf_population), get_classifier_name(classifier), train_time, pred_time, b_acc))

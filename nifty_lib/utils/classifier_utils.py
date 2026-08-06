@@ -28,6 +28,7 @@ def get_classifier_name(clf_object):
     """
     clf_name = ""
     if clf_object is not None:
+        clf_name = clf_object.__class__.__name__
         if hasattr(clf_object, "base_estimator") and hasattr(clf_object, "n_estimators"):
             clf_name = clf_name + "(" + get_single_classifier_name(clf_object.base_estimator) + ";" \
                        + str(clf_object.n_estimators) + ")"
@@ -37,8 +38,16 @@ def get_classifier_name(clf_object):
                        + str(len(clf_object.estimators)) + ")"
             else:
                 clf_name = clf_name + "(" + str(len(clf_object.estimators)) + ")"
-        else:
-            clf_name = clf_object.__class__.__name__
+        elif hasattr(clf_object, "n_estimators"):
+            clf_name = clf_name + "(" + str(clf_object.n_estimators) + ")"
+        elif hasattr(clf_object, "n_base"):
+            clf_name = clf_name + "(" + str(clf_object.n_base) + ";" + get_classifier_name(clf_object.clf) + ")"
+        elif clf_name == "Pipeline":
+            clf_name = get_classifier_name(clf_object.named_steps['clf'])
+        elif clf_name == "KNeighborsClassifier":
+            clf_name = clf_name + "(" + str(clf_object.n_neighbors) + ")"
+        elif clf_name == "SGDClassifier":
+            clf_name = clf_name + "(" + str(clf_object.loss) + ")"
     return clf_name
 
 

@@ -31,12 +31,14 @@ class DifficultyPredictor:
         self.diff_predictor = None
         self.d_theta = None
 
-    def create_train_dataset(self, predictions: numpy.ndarray, labels: numpy.ndarray, input_data: numpy.ndarray, tt_split: float = 0.4):
+    def create_train_dataset(self, predictions: numpy.ndarray, labels: numpy.ndarray,
+                             input_data: numpy.ndarray, tt_split: float = 0.4,
+                             encoded_labels: list = []):
         """
         Function that returns the d_theta dataset used to train the predictor.
         The dataset is stored internally.
         :param predictions: the classifiers predictions
-        :param labels: the ground truth labels
+        :param labels: the (encoded) ground truth labels
         :param input_data: the input data (features) to create d_theta
         :param tt_split: the train_test split for the dataset
         :return:
@@ -44,9 +46,18 @@ class DifficultyPredictor:
         # Compute difficulty
         i_fun = 1*(predictions != labels)
         diff_value = numpy.average(i_fun, axis=0)
+        if len(encoded_labels) > 0:
+            labels = encoded_labels[labels]
         # Prepare d_theta
-        x_train, x_test, y_train, y_test = train_test_split(input_data, diff_value, train_size=tt_split, shuffle=False)
-        split_index = int(i_fun.shape[1]*tt_split)
+        if tt_split is not None and tt_split > 0:
+            x_train, x_test, y_train, y_test = train_test_split(input_data, diff_value, train_size=tt_split, shuffle=False)
+            split_index = int(i_fun.shape[1]*tt_split)
+        else:
+            x_train = input_data
+            y_train = diff_value
+            x_test = None
+            y_test = None
+            split_index = len(labels)
         self.d_theta = {"x_train": x_train, "y_train": y_train, "x_test": x_test, "y_test": y_test,
                         "clf_preds_train": i_fun[:, 0:split_index], "clf_preds_test": i_fun[:, split_index:],
                         "base_label_train": labels[0: split_index], "base_label_test": labels[split_index:]}
